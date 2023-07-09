@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PC Status</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            setInterval(checkPCStatus, 5000); // Check PC status every 5 seconds
-
-            function checkPCStatus() {
-                $.get('/pc-status', function(response) {
-                    $('#status').text(response);
-                });
-            }
-        });
-    </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>PC Status:</h1>
-    <p id="status">Loading...</p>
+  <h1>PC Status:</h1>
+  <div id="status"></div>
+  <script>
+    $(document).ready(function() {
+      setInterval(function() {
+        $.ajax({
+          url: 'https://danielackermann15.pythonanywhere.com/pc-status',  // Replace with the URL of your Flask application's API endpoint on PythonAnywhere
+          type: 'GET',
+          success: function(response) {
+            $('#status').text(response.status);  // Assuming the response contains a 'status' field
+          },
+          error: function(xhr, status, error) {
+            $('#status').text('Error');
+          }
+        });
+      }, 5000);  // Request every 5 seconds
+    });
+  </script>
 </body>
 </html>
+
